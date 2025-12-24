@@ -18,6 +18,4 @@ async def create_studies(
 @router.get("", response_model=StudiesRead)
 async def get_all(db: AsyncSession = Depends(get_session)):
     studies = await get_studies(db)
-    if not studies:
-        raise HTTPException(status_code=404, detail="Studies not found")
     return studies
