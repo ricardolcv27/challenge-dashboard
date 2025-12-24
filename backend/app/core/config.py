@@ -4,9 +4,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     DATABASE_USER: str = "postgres"
     DATABASE_PASSWORD: str = "postgres"
-    DATABASE_DB: str = "postgres"
+    DATABASE_DB: str = "studies_db"
     DATABASE_HOST: str = "db"
-    DATABASE_PORT: int = 5432
+    DATABASE_PORT: int = 5433
     DATABASE_URL: str | None = None
     PORT: int = 8000
     HOST: str = "0.0.0.0"

@@ -14,6 +14,6 @@ async def create_studies(
     return await crud_create_studies(db, studies_in)
 
 
-@router.get("", response_model=StudiesRead)
+@router.get("", response_model=list[StudiesRead])
 async def get_all(db: AsyncSession = Depends(get_session)):
     return await crud_get_studies(db)

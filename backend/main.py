@@ -7,6 +7,8 @@ from app.core.config import Settings
 from app.core.middleware import setup_middlewares
 from app.core.errors import AppError, ErrorType
 from app.db.session import engine
+from app.db.base import Base
+from app.models.studies import Studies  # Importar todos los modelos
 
 # configurar logging
 logging.basicConfig(
@@ -43,6 +45,9 @@ async def validation_exception_handler(request, exc: RequestValidationError):
 @app.on_event("startup")
 async def on_startup():
     logger.info("Starting application...")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info("Database tables created successfully")
 
 
 # shutdown
