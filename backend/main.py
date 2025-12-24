@@ -1,8 +1,11 @@
 import logging
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from app.api.api import api_router
 from app.core.config import Settings
 from app.core.middleware import setup_middlewares
+from app.core.errors import AppError, ErrorType
 from app.db.session import engine
 
 # configurar logging
@@ -20,6 +23,20 @@ setup_middlewares(app)
 
 # add routers
 app.include_router(api_router)
+
+
+# capturar errores de validacion
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    logger.error(f"Validation error: {exc.errors()}")
+    return JSONResponse(
+        status_code=400,
+        content=AppError(
+            code=400,
+            error_type=ErrorType.BAD_REQUEST,
+            message="Error en el input del request. Verifica los datos enviados."
+        ).to_dict(),
+    )
 
 
 # startup
