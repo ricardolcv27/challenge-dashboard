@@ -5,7 +5,7 @@ from typing import Optional
 class StudiesCreate(BaseModel):
     patient_name: str
     type: str
-    status: Optional[str] = "pendiente"
+    status: str
 
 
 class StudiesRead(BaseModel):
