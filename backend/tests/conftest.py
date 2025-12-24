@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from httpx import AsyncClient, ASGITransport
 
-from app.main import app
+from main import app
 from app.db.base import Base
 from app.db.session import get_session
 
