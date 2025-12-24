@@ -15,7 +15,7 @@ class AppError(Exception):
         self.type = error_type
         self.message = message
         super().__init__(message)
-    
+
     def to_dict(self):
         return {
             "code": self.code,

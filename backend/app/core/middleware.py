@@ -29,7 +29,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
 
 class ErrorHandlerMiddleware(BaseHTTPMiddleware):
-    #Middleware para capturar y manejar errores
+    # Middleware para capturar y manejar errores
     async def dispatch(self, request: Request, call_next):
         try:
             response = await call_next(request)
@@ -41,7 +41,7 @@ class ErrorHandlerMiddleware(BaseHTTPMiddleware):
                 content=error.to_dict()
             )
         except Exception as error:
-            #error generico
+            # error generico
             logger.error(f"Unhandled exception: {str(error)}")
             return JSONResponse(
                 status_code=500,

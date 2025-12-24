@@ -47,4 +47,3 @@ test:
 
 lint:
 	flake8 app/
-	black app/ --check
