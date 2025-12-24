@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_session
 from app.schemas.studies import StudiesCreate, StudiesRead
-from app.crud.studies import create_studies, get_studies
+from app.crud.studies import create_studies as crud_create_studies, get_studies as crud_get_studies
 
 router = APIRouter()
 
@@ -11,9 +11,9 @@ router = APIRouter()
 async def create_studies(
     studies_in: StudiesCreate, db: AsyncSession = Depends(get_session)
 ):
-    return await create_studies(db, studies_in)
+    return await crud_create_studies(db, studies_in)
 
 
 @router.get("", response_model=StudiesRead)
 async def get_all(db: AsyncSession = Depends(get_session)):
-    return await get_studies(db)
+    return await crud_get_studies(db)
