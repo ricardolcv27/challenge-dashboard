@@ -1,1 +1,1 @@
-from backend.app.models.studies import Studies 
+from app.models.studies import Studies

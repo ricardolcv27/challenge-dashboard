@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.app.models.studies import Studies
+from app.models.studies import Studies
 from app.schemas.user import StudiesCreate
 
 
