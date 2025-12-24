@@ -36,16 +36,18 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
   const inputStyle = {
     width: '100%',
     padding: '0.5rem',
-    border: '1px solid #d1d5db',
+    border: '1px solid #374151',
     borderRadius: '4px',
     fontSize: '1rem',
+    backgroundColor: '#111827',
+    color: '#f3f4f6',
   };
 
   const labelStyle = {
     display: 'block',
     fontSize: '0.875rem',
     fontWeight: '500',
-    color: '#374151',
+    color: '#e5e7eb',
     marginBottom: '0.5rem',
   };
 

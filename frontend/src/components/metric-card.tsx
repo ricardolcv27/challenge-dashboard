@@ -8,19 +8,20 @@ export const MetricCard = ({ title, value, color = '#3b82f6' }: MetricCardProps)
   return (
     <div
       style={{
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#1f2937',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
         padding: '1.5rem',
         textAlign: 'center',
         borderTop: `4px solid ${color}`,
+        border: '1px solid #374151',
       }}
     >
       <h3
         style={{
           fontSize: '0.875rem',
           fontWeight: '600',
-          color: '#6b7280',
+          color: '#9ca3af',
           marginBottom: '0.5rem',
           textTransform: 'uppercase',
         }}
@@ -31,7 +32,7 @@ export const MetricCard = ({ title, value, color = '#3b82f6' }: MetricCardProps)
         style={{
           fontSize: '2rem',
           fontWeight: 'bold',
-          color: '#1f2937',
+          color: '#f3f4f6',
         }}
       >
         {value}

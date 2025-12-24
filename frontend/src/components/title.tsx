@@ -8,8 +8,9 @@ export const Title = ({ text }: TitleProps) => {
       style={{
         fontSize: '2.5rem',
         fontWeight: 'bold',
-        color: '#1f2937',
+        color: '#f3f4f6',
         textAlign: 'center',
+        fontFamily: 'Poppins, sans-serif',
       }}
     >
       {text}

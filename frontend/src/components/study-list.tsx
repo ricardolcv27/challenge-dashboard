@@ -1,4 +1,5 @@
 import { Study } from '@/types/study';
+import '../styles/scrollbar.css';
 
 interface StudyListProps {
   studies: Study[];
@@ -18,7 +19,7 @@ export const StudyList = ({ studies }: StudyListProps) => {
 
   if (studies.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+      <div style={{ textAlign: 'center', padding: '2rem', color: '#9ca3af' }}>
         No hay estudios registrados
       </div>
     );
@@ -26,6 +27,7 @@ export const StudyList = ({ studies }: StudyListProps) => {
 
   return (
     <div
+      className="custom-scrollbar"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -39,13 +41,14 @@ export const StudyList = ({ studies }: StudyListProps) => {
         <div
           key={study.id}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#111827',
             borderRadius: '8px',
             padding: '1rem',
-            border: '1px solid #e5e7eb',
+            border: '1px solid #374151',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            transition: 'transform 0.2s',
           }}
         >
           <div style={{ flex: 1 }}>
@@ -53,13 +56,13 @@ export const StudyList = ({ studies }: StudyListProps) => {
               style={{
                 fontSize: '1.125rem',
                 fontWeight: '600',
-                color: '#1f2937',
+                color: '#f3f4f6',
                 marginBottom: '0.25rem',
               }}
             >
               {study.patient_name}
             </h3>
-            <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
               {study.type}
             </p>
           </div>

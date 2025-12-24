@@ -45,8 +45,9 @@ export const Home = () => {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: '#0f172a',
         padding: '2rem',
+        fontFamily: 'Poppins, sans-serif',
       }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>

@@ -8,8 +8,9 @@ export const Subtitle = ({ text }: SubtitleProps) => {
       style={{
         fontSize: '1.5rem',
         fontWeight: '600',
-        color: '#1f2937',
+        color: '#e5e7eb',
         marginBottom: '1rem',
+        textAlign: 'center',
       }}
     >
       {text}
