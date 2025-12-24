@@ -25,7 +25,16 @@ export const StudyList = ({ studies }: StudyListProps) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        maxHeight: '400px',
+        overflowY: 'auto', 
+        paddingRight: '0.5rem', 
+      }}
+    >
       {studies.map((study) => (
         <div
           key={study.id}
