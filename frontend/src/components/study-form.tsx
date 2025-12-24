@@ -10,15 +10,17 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
   const [patientName, setPatientName] = useState('');
   const [type, setType] = useState('');
   const [status, setStatus] = useState('pendiente');
+  const [formError, setFormError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!patientName.trim() || !type.trim()) {
-      alert('Por favor, complete todos los campos');
+      setFormError('Por favor, complete todos los campos');
       return;
     }
 
+    setFormError(null); // Clear previous errors
     await onSubmit({
       patient_name: patientName,
       type,
@@ -49,6 +51,18 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      {formError && (
+        <div
+          style={{
+            color: '#ef4444',
+            marginBottom: '1rem',
+            fontSize: '0.875rem',
+            textAlign: 'center',
+          }}
+        >
+          {formError}
+        </div>
+      )}
       <div>
         <label style={labelStyle}>Nombre del Paciente</label>
         <input

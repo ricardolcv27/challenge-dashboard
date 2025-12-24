@@ -7,6 +7,7 @@ import { Study, CreateStudyPayload, StudyMetrics } from '@/types/study';
 export const Home = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Función para obtener estudios
   const fetchStudies = useCallback(() => {
@@ -28,12 +29,13 @@ export const Home = () => {
   const handleCreateStudy = async (payload: CreateStudyPayload) => {
     try {
       setIsSubmitting(true);
+      setFormError(null);
       await studiesService.createStudy(payload);
       // Refrescar la lista de estudios
       setRefreshKey((prev) => prev + 1);
     } catch (err) {
       console.error('Error al crear estudio:', err);
-      alert('Error al crear el estudio. Por favor, intente nuevamente.');
+      setFormError('Error al crear el estudio. Por favor, intente nuevamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -76,6 +78,18 @@ export const Home = () => {
           {/* Formulario para agregar estudios */}
           <Card>
             <Subtitle text="Agregar Nuevo Estudio" />
+            {formError && (
+              <div
+                style={{
+                  color: '#ef4444',
+                  marginBottom: '1rem',
+                  fontSize: '0.875rem',
+                  textAlign: 'center',
+                }}
+              >
+                {formError}
+              </div>
+            )}
             <StudyForm onSubmit={handleCreateStudy} loading={isSubmitting} />
           </Card>
 
