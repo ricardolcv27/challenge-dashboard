@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 
 
@@ -9,10 +9,9 @@ class StudiesCreate(BaseModel):
 
 
 class StudiesRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     patient_name: str
     type: str
     status: str
-
-    class Config:
-        orm_mode = True

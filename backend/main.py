@@ -1,4 +1,5 @@
 import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -18,7 +19,24 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 settings = Settings()
-app = FastAPI()
+
+
+#startup y shutdown
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # startup
+    logger.info("Starting application...")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info("Database tables created successfully")
+    yield
+
+    # shutdown
+    logger.info("Shutting down application...")
+    await engine.dispose()
+
+
+app = FastAPI(lifespan=lifespan)
 
 # middlewares
 setup_middlewares(app)
@@ -39,22 +57,6 @@ async def validation_exception_handler(request, exc: RequestValidationError):
             message="Error en el input del request. Verifica los datos enviados."
         ).to_dict(),
     )
-
-
-# startup
-@app.on_event("startup")
-async def on_startup():
-    logger.info("Starting application...")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    logger.info("Database tables created successfully")
-
-
-# shutdown
-@app.on_event("shutdown")
-async def on_shutdown():
-    logger.info("Shutting down application...")
-    await engine.dispose()
 
 
 # root endpoint
