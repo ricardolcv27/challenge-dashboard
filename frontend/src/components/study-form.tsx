@@ -34,13 +34,14 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
   };
 
   const inputStyle = {
-    width: '100%',
+    width: 'calc(100% - 1rem)',
     padding: '0.5rem',
     border: '1px solid #374151',
     borderRadius: '4px',
     fontSize: '1rem',
     backgroundColor: '#111827',
     color: '#f3f4f6',
+    boxSizing: 'border-box' as const,
   };
 
   const labelStyle = {

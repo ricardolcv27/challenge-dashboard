@@ -62,9 +62,9 @@ export const Home = () => {
             marginTop: '2rem',
           }}
         >
-          <MetricCard title="Total de Estudios" value={metrics.total} color="#3b82f6" />
-          <MetricCard title="Estudios Pendientes" value={metrics.pending} color="#f59e0b" />
-          <MetricCard title="Estudios Completados" value={metrics.completed} color="#10b981" />
+          <MetricCard title="Total de Estudios" value={metrics.total} color="#60a5fa" />
+          <MetricCard title="Estudios Pendientes" value={metrics.pending} color="#fbbf24" />
+          <MetricCard title="Estudios Completados" value={metrics.completed} color="#34d399" />
         </div>
 
         {/* Contenido principal */}
