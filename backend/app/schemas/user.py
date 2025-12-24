@@ -1,16 +1,18 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional
 
 
-class UserCreate(BaseModel):
-    email: EmailStr
-    full_name: Optional[str] = None
+class StudiesCreate(BaseModel):
+    patient_name: str
+    type: str
+    status: Optional[str] = "pendiente"
 
 
-class UserRead(BaseModel):
+class StudiesRead(BaseModel):
     id: int
-    email: EmailStr
-    full_name: Optional[str] = None
+    patient_name: str
+    type: str
+    status: str
 
     class Config:
         orm_mode = True

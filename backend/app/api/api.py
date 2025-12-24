@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.endpoints import users
+from backend.app.api.endpoints import studies
 
 api_router = APIRouter()
-api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(studies.router, prefix="/studies", tags=["studies"])
