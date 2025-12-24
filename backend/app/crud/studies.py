@@ -1,15 +1,21 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from app.models.studies import Studies
 from app.schemas.studies import StudiesCreate
+from app.core.errors import AppError, ErrorType
 
 
 async def get_studies(db: AsyncSession) -> list[Studies]:
     try:
         result = await db.execute(select(Studies))
         return result.scalars().all()
-    except Exception:
-        raise
+    except Exception as e:
+        raise AppError(
+            code=500,
+            error_type=ErrorType.INTERNAL_SERVER_ERROR,
+            message="Error interno del servidor"
+        )
 
 
 async def create_studies(db: AsyncSession, studies_in: StudiesCreate) -> Studies:
@@ -21,4 +27,8 @@ async def create_studies(db: AsyncSession, studies_in: StudiesCreate) -> Studies
         return db_studies
     except Exception:
         await db.rollback()
-        raise
+        raise AppError(
+            code=500,
+            error_type=ErrorType.INTERNAL_SERVER_ERROR,
+            message="Error interno del servidor"
+        )

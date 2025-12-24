@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi.responses import JSONResponse
+from app.core.errors import AppError
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +28,35 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class ErrorHandlerMiddleware(BaseHTTPMiddleware):
+    #Middleware para capturar y manejar errores
+    async def dispatch(self, request: Request, call_next):
+        try:
+            response = await call_next(request)
+            return response
+        except AppError as error:
+            logger.error(f"AppException: {error.message} [{error.code}]")
+            return JSONResponse(
+                status_code=error.code,
+                content=error.to_dict()
+            )
+        except Exception as error:
+            #error generico
+            logger.error(f"Unhandled exception: {str(error)}")
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "code": 500,
+                    "type": "INTERNAL_SERVER_ERROR",
+                    "message": "Error interno del servidor"
+                }
+            )
+
+
 def setup_middlewares(app: FastAPI):
     """configura todos los middlewares de la app"""
+
+    app.add_middleware(ErrorHandlerMiddleware)
 
     app.add_middleware(
         CORSMiddleware,
