@@ -18,7 +18,7 @@ install:
 	pip install -r requirements.txt
 
 dev:
-	uvicorn app.main:app --reload --host $${HOST:-0.0.0.0} --port $${PORT:-8000}
+	uvicorn main:app --reload --host $${HOST:-0.0.0.0} --port $${PORT:-8000}
 
 up:
 	docker-compose up -d

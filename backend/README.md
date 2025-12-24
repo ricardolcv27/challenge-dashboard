@@ -82,7 +82,7 @@ make install
 
 # Levantar servidor
 make dev
-# O manualmente: uvicorn app.main:app --reload
+# O manualmente: uvicorn main:app --reload
 ```
 
 ## Migraciones de base de datos con Alembic
