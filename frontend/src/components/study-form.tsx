@@ -18,7 +18,10 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
     e.preventDefault();
 
     if (!patientName.trim() || !type) {
-      setFormError('Por favor, complete todos los campos');
+      const missingFields = [];
+      if (!patientName.trim()) missingFields.push('Nombre del Paciente');
+      if (!type) missingFields.push('Tipo de Estudio');
+      setFormError(`Por favor, complete los siguientes campos: ${missingFields.join(', ')}`);
       return;
     }
 
