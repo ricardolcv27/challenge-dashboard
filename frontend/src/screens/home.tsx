@@ -23,7 +23,7 @@ export const Home = () => {
     total: studies?.length || 0,
     pending: studies?.filter((s) => s.status === 'pendiente').length || 0,
     completed:
-      studies?.filter((s) => s.status === 'completado' || s.status === 'terminado').length || 0,
+      studies?.filter((s) => s.status === 'completado').length || 0,
   };
 
   // Manejar el envío del formulario
