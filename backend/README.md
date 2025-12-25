@@ -182,3 +182,4 @@ PUBLIC_URL=http://localhost:8000
 - Implementar migraciones con Alembic.
 - Cambiar SQLite por PostgreSQL en producción.
 - CI/CD pipelines.
+- Agregar paginacion al endpoint `GET /studies` y agregar otro endpoint que me indique la cantidad de de estudios totales, pendientes y completados.
