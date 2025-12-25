@@ -1,22 +1,22 @@
-# FastAPI Template
+# FastAPI Backend - Medical Studies Dashboard
 
-Template para arrancar un backend con FastAPI, PostgreSQL con SQLAlchemy y Alembic.
+Backend API para gestión de estudios médicos usando FastAPI y SQLite.
 
 ## Características
 
 - **FastAPI** - Framework web moderno y rápido
-- **PostgreSQL** - Base de datos relacional
-- **SQLAlchemy (async)** - ORM con soporte asíncrono
+- **SQLite** - Base de datos ligera (archivo `studies.db`)
+- **SQLAlchemy** - ORM con soporte asíncrono
 - **Alembic** - Migraciones de base de datos
 - **Docker + Docker Compose** - Desarrollo containerizado
 - **Middlewares** - CORS y logging configurados
 - **Pydantic** - Validación automática de datos
-- **pytest** - Tests unitarios con SQLite en memoria
+- **pytest** - Tests unitarios
 
 ## Estructura del proyecto
 
 ```
-python_template/
+backend/
 ├── app/
 │   ├── main.py              # Punto de entrada + middlewares
 │   ├── core/
@@ -26,26 +26,27 @@ python_template/
 │   │   ├── base.py          # Base de SQLAlchemy
 │   │   └── session.py       # Engine async + get_session
 │   ├── models/              # Modelos SQLAlchemy (tablas)
-│   │   └── user.py
+│   │   └── studies.py
 │   ├── schemas/             # Pydantic schemas (DTOs)
-│   │   └── user.py
+│   │   └── studies.py
 │   ├── crud/                # Lógica de acceso a datos
-│   │   └── user.py
+│   │   └── studies.py
 │   └── api/
 │       ├── api.py           # Router principal
 │       └── endpoints/
-│           └── users.py     # Endpoints de usuarios
+│           └── studies.py   # Endpoints de estudios
 ├── alembic/                 # Migraciones
 │   ├── versions/            # Archivos de migración
 │   └── env.py               # Configuración de Alembic
-├── tests/                   # Tests con SQLite en memoria
+├── tests/                   # Tests
 │   ├── conftest.py          # Fixtures y configuración
-│   └── test_users.py
+│   └── test_studies.py
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
 ├── alembic.ini              # Configuración de Alembic
 ├── Makefile                 # Comandos útiles
+├── studies.db               # Base de datos SQLite (generada)
 └── .env.example
 ```
 
@@ -60,7 +61,7 @@ cp .env.example .env
 # Editar .env si es necesario (opcional)
 ```
 
-### 2. Levantar con Docker Compose (recomendado)
+### 2. Levantar con Docker Compose
 
 ```bash
 docker-compose up --build
@@ -87,7 +88,7 @@ make dev
 
 ## Migraciones de base de datos con Alembic
 
-### Usando Makefile (recomendado)
+### Usando Makefile
 
 ```bash
 # Crear migración
@@ -183,15 +184,6 @@ Los tests son completamente independientes y cada uno usa su propia base de dato
 Copiar `.env.example` a `.env` y ajustar:
 
 ```bash
-#db
-DATABASE_USER=postgres
-DATABASE_PASSWORD=postgres
-DATABASE_DB=postgres
-DATABASE_HOST=db#localhost si no usas docker
-DATABASE_PORT=5432
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
-
-#app
 PORT=8000
 HOST=0.0.0.0
 PUBLIC_URL=http://localhost:8000
