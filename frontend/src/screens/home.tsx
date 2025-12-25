@@ -3,6 +3,7 @@ import { Title, Subtitle, Card, MetricCard, StudyList, StudyForm } from '@/compo
 import { useFetch } from '@/hooks/useFetch';
 import { studiesService } from '@/services/studies.service';
 import { Study, CreateStudyPayload, StudyMetrics } from '@/types/study';
+import styles from '@/styles/home.module.css';
 
 export const Home = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -42,52 +43,24 @@ export const Home = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: '#0f172a',
-        padding: '2rem',
-        fontFamily: 'Poppins, sans-serif',
-      }}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div className={styles.container}>
+      <div className={styles.contentWrapper}>
         <Title text="Dashboard de Estudios Médicos" />
 
         {/* Métricas */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1.5rem',
-            marginTop: '2rem',
-          }}
-        >
+        <div className={styles.metricsGrid}>
           <MetricCard title="Total de Estudios" value={metrics.total} color="#60a5fa" />
           <MetricCard title="Estudios Pendientes" value={metrics.pending} color="#fbbf24" />
           <MetricCard title="Estudios Completados" value={metrics.completed} color="#34d399" />
         </div>
 
         {/* Contenido principal */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            marginTop: '2rem',
-          }}
-        >
+        <div className={styles.mainGrid}>
           {/* Formulario para agregar estudios */}
           <Card>
             <Subtitle text="Agregar Nuevo Estudio" />
             {formError && (
-              <div
-                style={{
-                  color: '#ef4444',
-                  marginBottom: '1rem',
-                  fontSize: '0.875rem',
-                  textAlign: 'center',
-                }}
-              >
+              <div className={styles.formError}>
                 {formError}
               </div>
             )}
@@ -98,18 +71,12 @@ export const Home = () => {
           <Card>
             <Subtitle text="Lista de Estudios" />
             {loading && (
-              <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+              <div className={styles.loadingState}>
                 Cargando estudios...
               </div>
             )}
             {error && (
-              <div
-                style={{
-                  textAlign: 'center',
-                  padding: '2rem',
-                  color: '#ef4444',
-                }}
-              >
+              <div className={styles.errorState}>
                 Error al cargar los estudios: {error.message}
               </div>
             )}

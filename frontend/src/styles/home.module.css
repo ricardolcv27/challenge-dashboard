@@ -1,0 +1,44 @@
+.container {
+  min-height: 100vh;
+  background-color: #0f172a;
+  padding: 2rem;
+  font-family: Poppins, sans-serif;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.loadingState {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.errorState {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+}
+
+.formError {
+  color: #ef4444;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
