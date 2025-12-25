@@ -86,9 +86,19 @@ make dev
 
 ## Base de datos
 
+Se utilizo SQLite.
+
+### Modelado de tabla
+
+Se creo una unica tabla `studies` que almacena los estudios hechos.
+
+![alt text](image.png)
+
 ### Auto-creación de tablas
 
-Las tablas se crean automaticamente al iniciar la aplicacion gracias a `Base.metadata.create_all` en el startup en `main.py`.
+Las tablas se crean automaticamente al iniciar la aplicacion.
+
+###
 
 ### Resetear la base de datos
 
@@ -110,8 +120,7 @@ make help       # Ver todos los comandos disponibles
 make install    # Instalar dependencias
 make dev        # Iniciar servidor en desarrollo
 make up         # Levantar Docker Compose
-make down       # Detener Docker Compose
-make clean      # Limpiar archivos generados (cache, db)
+make down       # Detener Docker Compose(cache, db)
 make test       # Ejecutar tests
 make lint       # Ejecutar linters (flake8 + black)
 make shell      # Shell en contenedor Docker
@@ -125,7 +134,7 @@ Actualmente permite todas las origins (`*`). Para restringir, editar `app/core/m
 ```python
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Cambiar aquí
+    allow_origins=["http://localhost:3000"],  # Cambiar aca
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
@@ -153,7 +162,7 @@ pytest tests/ --cov=app
 ### Estructura de tests
 
 - `tests/conftest.py`: Configuración de fixtures (BD en memoria, cliente HTTP)
-- `tests/test_users.py`: Tests de endpoints de usuarios
+- `tests/test_studies.py`: Tests de endpoints de usuarios
 
 Los tests son completamente independientes y cada uno usa su propia base de datos limpia.
 
@@ -169,6 +178,7 @@ PUBLIC_URL=http://localhost:8000
 
 ## Mejoras futuras
 
+- Mejor modelado de tablas para que sea mas escalable.
 - Implementar migraciones con Alembic.
 - Cambiar SQLite por PostgreSQL en producción.
 - CI/CD pipelines.

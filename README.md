@@ -59,3 +59,11 @@ Cuando ya este corriendo el server, dirigase al directorio `frontend/`, ingrese 
 npm install && npm start
 ```
 Cuando se haya levantado el frontend, puede ingresar a http://localhost:5173/
+
+# Consideraciones y mejoras
+
+- Para este challenge utilice una base de datos en memoria (SQLite)
+- Como es una aplicacion bastante chica no quise comlejizarme con la modelacion de las tablas, y unicamente cree una tabla `studies` con id, nombre del paciente, tipo de estudio y el estado del estudio.
+  - **Mejora**: Se podria hacer un mejor modelado para que sea mas escalable. Teniendo una tabla usuario donde esten todos los pacientes, otra tabla para los tipos de estudios especificos que se haran (Rayos X, ecografias, etc) y otra tabla que relacione usuario con tipo de estudio con un feature del estado de dicho estudio.
+- Se puede usar Alembic para manejar el tema de las migraciones.
+- Agregar CI/CD pipelines.

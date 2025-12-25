@@ -6,7 +6,6 @@ help:
 	@echo "  make dev        - Iniciar servidor en modo desarrollo"
 	@echo "  make up         - Levantar servicios con Docker Compose"
 	@echo "  make down       - Detener servicios Docker"
-	@echo "  make clean      - Limpiar archivos generados (cache, db)"
 	@echo "  make shell      - Abrir shell en contenedor web"
 	@echo "  make test       - Ejecutar tests"
 	@echo "  make lint       - Ejecutar linters"
@@ -22,10 +21,6 @@ up:
 
 down:
 	docker-compose down
-
-clean:
-	rm -rf __pycache__ app/__pycache__ app/*/__pycache__ tests/__pycache__
-	rm -f *.db
 
 shell:
 	docker-compose exec web bash
