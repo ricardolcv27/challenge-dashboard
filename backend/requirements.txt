@@ -1,12 +1,9 @@
 fastapi
 uvicorn[standard]
 SQLAlchemy>=1.4
-python-dotenv
 pydantic
 pydantic-settings
 pytest
 pytest-asyncio
 httpx
-pydantic[email]
 aiosqlite
-black

@@ -140,6 +140,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 ```
+Actualmente el `allow_origins` esta con `[*]` para el desarrollo y probar el challenge.
 
 ### 2. Logging
 Logea todas las peticiones HTTP
@@ -153,16 +154,13 @@ Los tests usan SQLite en memoria en lugar de PostgreSQL para mayor velocidad y s
 make test
 
 # O directamente con pytest
-pytest tests/ -v
-
-# Con coverage
-pytest tests/ --cov=app
+PYTHONPATH=. pytest tests/ -v 
 ```
 
 ### Estructura de tests
 
 - `tests/conftest.py`: Configuración de fixtures (BD en memoria, cliente HTTP)
-- `tests/test_studies.py`: Tests de endpoints de usuarios
+- `tests/test_studies.py`: Tests de endpoints de studies
 
 Los tests son completamente independientes y cada uno usa su propia base de datos limpia.
 
@@ -173,13 +171,12 @@ Copiar `.env.example` a `.env` y ajustar:
 ```bash
 PORT=8000
 HOST=0.0.0.0
-PUBLIC_URL=http://localhost:8000
 ```
 
 ## Mejoras futuras
 
+- Agregar paginacion al endpoint `GET /studies` y agregar otro endpoint que me indique la cantidad de de estudios totales, pendientes y completados.
 - Mejor modelado de tablas para que sea mas escalable.
 - Implementar migraciones con Alembic.
 - Cambiar SQLite por PostgreSQL en producción.
 - CI/CD pipelines.
-- Agregar paginacion al endpoint `GET /studies` y agregar otro endpoint que me indique la cantidad de de estudios totales, pendientes y completados.
