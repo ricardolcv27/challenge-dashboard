@@ -13,8 +13,8 @@ export interface Study {
 
 export interface CreateStudyPayload {
   patient_name: string;
-  type: string;
-  status: string;
+  type: StudyType;
+  status: StudyStatus;
 }
 
 export interface StudyMetrics {

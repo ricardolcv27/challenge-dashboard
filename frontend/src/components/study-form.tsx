@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { CreateStudyPayload } from '@/types/study';
-import { STUDY_TYPES_OPTIONS, STUDY_STATUSES, StudyStatus } from '@/constants';
+import { STUDY_TYPES_OPTIONS, STUDY_STATUSES, StudyStatus, StudyType } from '@/constants';
 import styles from '@/styles/study-form.module.css';
 
 interface StudyFormProps {
@@ -10,14 +10,14 @@ interface StudyFormProps {
 
 export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
   const [patientName, setPatientName] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState<StudyType | ''>('');
   const [status, setStatus] = useState<StudyStatus>(STUDY_STATUSES.PENDIENTE);
   const [formError, setFormError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!patientName.trim() || !type.trim()) {
+    if (!patientName.trim() || !type) {
       setFormError('Por favor, complete todos los campos');
       return;
     }
@@ -25,7 +25,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
     setFormError(null);
     await onSubmit({
       patient_name: patientName,
-      type,
+      type: type as StudyType,
       status,
     });
 
@@ -58,7 +58,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
         <label className={styles.label}>Tipo de Estudio</label>
         <select
           value={type}
-          onChange={(e) => setType(e.target.value)}
+          onChange={(e) => setType(e.target.value as StudyType)}
           className={styles.select}
           disabled={loading}
         >
