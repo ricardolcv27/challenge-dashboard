@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { CreateStudyPayload } from '@/types/study';
+import styles from '../styles/study-form.module.css';
 
 interface StudyFormProps {
   onSubmit: (study: CreateStudyPayload) => Promise<void>;
@@ -20,7 +21,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
       return;
     }
 
-    setFormError(null); // Clear previous errors
+    setFormError(null);
     await onSubmit({
       patient_name: patientName,
       type,
@@ -33,57 +34,31 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
     setStatus('pendiente');
   };
 
-  const inputStyle = {
-    width: 'calc(100% - 1rem)',
-    padding: '0.5rem',
-    border: '1px solid #374151',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    backgroundColor: '#111827',
-    color: '#f3f4f6',
-    boxSizing: 'border-box' as const,
-  };
-
-  const labelStyle = {
-    display: 'block',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    color: '#e5e7eb',
-    marginBottom: '0.5rem',
-  };
-
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       {formError && (
-        <div
-          style={{
-            color: '#ef4444',
-            marginBottom: '1rem',
-            fontSize: '0.875rem',
-            textAlign: 'center',
-          }}
-        >
+        <div className={styles.formError}>
           {formError}
         </div>
       )}
-      <div>
-        <label style={labelStyle}>Nombre del Paciente</label>
+      <div className={styles.formGroup}>
+        <label className={styles.label}>Nombre del Paciente</label>
         <input
           type="text"
           value={patientName}
           onChange={(e) => setPatientName(e.target.value)}
           placeholder="Ej: Juan Pérez"
-          style={inputStyle}
+          className={styles.input}
           disabled={loading}
         />
       </div>
 
-      <div>
-        <label style={labelStyle}>Tipo de Estudio</label>
+      <div className={styles.formGroup}>
+        <label className={styles.label}>Tipo de Estudio</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          style={inputStyle}
+          className={styles.select}
           disabled={loading}
         >
           <option value="">Seleccione un tipo</option>
@@ -95,12 +70,12 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
         </select>
       </div>
 
-      <div>
-        <label style={labelStyle}>Estado</label>
+      <div className={styles.formGroup}>
+        <label className={styles.label}>Estado</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          style={inputStyle}
+          className={styles.select}
           disabled={loading}
         >
           <option value="pendiente">Pendiente</option>
@@ -111,17 +86,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
       <button
         type="submit"
         disabled={loading}
-        style={{
-          backgroundColor: loading ? '#9ca3af' : '#3b82f6',
-          color: 'white',
-          padding: '0.75rem 1.5rem',
-          borderRadius: '4px',
-          border: 'none',
-          fontSize: '1rem',
-          fontWeight: '500',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          marginTop: '0.5rem',
-        }}
+        className={styles.submitButton}
       >
         {loading ? 'Agregando...' : 'Agregar Estudio'}
       </button>

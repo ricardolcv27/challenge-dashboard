@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+}
+
+.studyCard {
+  background-color: #111827;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #374151;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.studyCard:hover {
+  transform: translateY(-2px);
+}
+
+.studyInfo {
+  flex: 1;
+}
+
+.patientName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f3f4f6;
+  margin-bottom: 0.25rem;
+  margin-top: 0;
+}
+
+.studyType {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.statusBadge {
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.statusPendiente {
+  background-color: #f59e0b;
+}
+
+.statusCompletado {
+  background-color: #10b981;
+}
+
+.statusDefault {
+  background-color: #6b7280;
+}
