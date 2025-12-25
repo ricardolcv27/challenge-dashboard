@@ -74,7 +74,7 @@ async def test_get_studies_with_data(client: AsyncClient):
     study2 = {
         "patient_name": "Pedro López",
         "type": "Resonancia",
-        "status": "en_proceso"
+        "status": "completado"
     }
     
     await client.post("/studies", json=study1)
