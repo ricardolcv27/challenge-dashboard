@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { CreateStudyPayload } from '@/types/study';
-import styles from '../styles/study-form.module.css';
+import styles from '@/styles/study-form.module.css';
 
 interface StudyFormProps {
   onSubmit: (study: CreateStudyPayload) => Promise<void>;

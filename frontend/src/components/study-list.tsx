@@ -1,5 +1,5 @@
 import { Study } from '@/types/study';
-import styles from '../styles/study-list.module.css';
+import styles from '@/styles/study-list.module.css';
 import '../styles/scrollbar.css';
 
 interface StudyListProps {
