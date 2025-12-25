@@ -1,13 +1,15 @@
-# FastAPI Backend - Medical Studies Dashboard
+# Backend - Medical Studies Dashboard
 
 Backend API para gestión de estudios médicos usando FastAPI y SQLite.
+
+Se uso como plantilla base un repo propio: https://github.com/ricardolcv27/fastapi-lite
 
 ## Características
 
 - **FastAPI** - Framework web moderno y rápido
 - **SQLite** - Base de datos ligera (archivo `studies.db`)
 - **SQLAlchemy** - ORM con soporte asíncrono
-- **Alembic** - Migraciones de base de datos
+- **Auto-creación de tablas** - Las tablas se crean automáticamente al iniciar la app
 - **Docker + Docker Compose** - Desarrollo containerizado
 - **Middlewares** - CORS y logging configurados
 - **Pydantic** - Validación automática de datos
@@ -25,9 +27,9 @@ backend/
 │   ├── db/
 │   │   ├── base.py          # Base de SQLAlchemy
 │   │   └── session.py       # Engine async + get_session
-│   ├── models/              # Modelos SQLAlchemy (tablas)
+│   ├── models/              # tablas
 │   │   └── studies.py
-│   ├── schemas/             # Pydantic schemas (DTOs)
+│   ├── schemas/             # DTOs
 │   │   └── studies.py
 │   ├── crud/                # Lógica de acceso a datos
 │   │   └── studies.py
@@ -35,18 +37,14 @@ backend/
 │       ├── api.py           # Router principal
 │       └── endpoints/
 │           └── studies.py   # Endpoints de estudios
-├── alembic/                 # Migraciones
-│   ├── versions/            # Archivos de migración
-│   └── env.py               # Configuración de Alembic
 ├── tests/                   # Tests
 │   ├── conftest.py          # Fixtures y configuración
 │   └── test_studies.py
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-├── alembic.ini              # Configuración de Alembic
 ├── Makefile                 # Comandos útiles
-├── studies.db               # Base de datos SQLite (generada)
+├── studies.db               # Base de datos SQLite (auto-generada)
 └── .env.example
 ```
 
@@ -86,45 +84,24 @@ make dev
 # O manualmente: uvicorn main:app --reload
 ```
 
-## Migraciones de base de datos con Alembic
+## Base de datos
 
-### Usando Makefile
+### Auto-creación de tablas
+
+Las tablas se crean automaticamente al iniciar la aplicacion gracias a `Base.metadata.create_all` en el startup en `main.py`.
+
+### Resetear la base de datos
+
+Si necesitas empezar de cero:
 
 ```bash
-# Crear migración
-make migrate MSG="Add phone to users"
-
-# Aplicar migraciones
-make push
-
-# Revertir última migración
-make rollback
-
-# Ver historial
-make history
+# Detener la app
+# Borrar la base de datos
+rm studies.db
+# Reiniciar la app (se recreara denuevo la base de datos)
+make dev
 ```
 
-### Ejemplo: Agregar campo a User
-
-1. **Editar el modelo** (`app/models/user.py`):
-   ```python
-   class User(Base):
-       __tablename__ = "users"
-       id = Column(Integer, primary_key=True, index=True)
-       email = Column(String, unique=True, index=True)
-       full_name = Column(String, nullable=True)
-       phone = Column(String, nullable=True)  # ← NUEVO
-   ```
-
-2. **Crear migración**:
-   ```bash
-   make migrate MSG="Add phone to users"
-   ```
-
-3. **Aplicar migración**:
-   ```bash
-   make push
-   ```
 
 ## Comandos útiles (Makefile)
 
@@ -134,6 +111,7 @@ make install    # Instalar dependencias
 make dev        # Iniciar servidor en desarrollo
 make up         # Levantar Docker Compose
 make down       # Detener Docker Compose
+make clean      # Limpiar archivos generados (cache, db)
 make test       # Ejecutar tests
 make lint       # Ejecutar linters (flake8 + black)
 make shell      # Shell en contenedor Docker
@@ -188,3 +166,9 @@ PORT=8000
 HOST=0.0.0.0
 PUBLIC_URL=http://localhost:8000
 ```
+
+## Mejoras futuras
+
+- Implementar migraciones con Alembic.
+- Cambiar SQLite por PostgreSQL en producción.
+- CI/CD pipelines.

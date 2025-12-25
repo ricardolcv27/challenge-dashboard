@@ -1,4 +1,4 @@
-.PHONY: help install dev up down migrate push rollback history shell test lint
+.PHONY: help install dev up down shell test lint clean
 
 help:
 	@echo "Comandos disponibles:"
@@ -6,10 +6,7 @@ help:
 	@echo "  make dev        - Iniciar servidor en modo desarrollo"
 	@echo "  make up         - Levantar servicios con Docker Compose"
 	@echo "  make down       - Detener servicios Docker"
-	@echo "  make migrate    - Crear migración automática (usar: make migrate MSG='mensaje')"
-	@echo "  make push       - Aplicar migraciones pendientes"
-	@echo "  make rollback   - Revertir última migración"
-	@echo "  make history    - Ver historial de migraciones"
+	@echo "  make clean      - Limpiar archivos generados (cache, db)"
 	@echo "  make shell      - Abrir shell en contenedor web"
 	@echo "  make test       - Ejecutar tests"
 	@echo "  make lint       - Ejecutar linters"
@@ -26,18 +23,11 @@ up:
 down:
 	docker-compose down
 
-migrate:
-	@if [ -z "$(MSG)" ]; then echo "Error: Debes proporcionar un mensaje. Uso: make migrate MSG='tu mensaje'"; exit 1; fi
-	alembic revision --autogenerate -m "$(MSG)"
-
-push:
-	alembic upgrade head
-
-rollback:
-	alembic downgrade -1
-
-history:
-	alembic history --verbose
+clean:
+	@echo "Limpiando archivos generados..."
+	rm -rf __pycache__ app/__pycache__ app/*/__pycache__ tests/__pycache__
+	rm -f *.db
+	@echo "✓ Limpieza completa"
 
 shell:
 	docker-compose exec web bash

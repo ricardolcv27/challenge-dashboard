@@ -7,7 +7,6 @@ pydantic-settings
 pytest
 pytest-asyncio
 httpx
-alembic
 pydantic[email]
 aiosqlite
 black
