@@ -12,7 +12,7 @@ export const Home = () => {
   // Función para obtener estudios
   const fetchStudies = useCallback(() => {
     return studiesService.getStudies();
-  }, [refreshKey]);
+  }, []);
 
   // Hook para obtener los estudios
   const { data: studies, loading, error } = useFetch<Study[]>(fetchStudies, [refreshKey]);
