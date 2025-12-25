@@ -19,11 +19,11 @@ src/
 ## instalation
 
 ```bash
-pnpm install
+npm install
 ```
 
 ## start
 
 ```bash
-pnpm start
+npm start
 ```
