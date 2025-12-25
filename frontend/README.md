@@ -1,6 +1,6 @@
-# React + Vite Template
+# Frontend - Medical Studies Dashboard
 
-Template para proyectos React con TypeScript y Vite.
+Como base se uso un template propio: https://github.com/ricardolcv27/react_template
 
 ## Estructura del Proyecto
 
@@ -22,14 +22,8 @@ src/
 pnpm install
 ```
 
-## dev
+## start
 
 ```bash
-pnpm dev
-```
-
-## Build
-
-```bash
-pnpm build
+pnpm start
 ```
