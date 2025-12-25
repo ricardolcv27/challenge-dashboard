@@ -24,10 +24,8 @@ down:
 	docker-compose down
 
 clean:
-	@echo "Limpiando archivos generados..."
 	rm -rf __pycache__ app/__pycache__ app/*/__pycache__ tests/__pycache__
 	rm -f *.db
-	@echo "✓ Limpieza completa"
 
 shell:
 	docker-compose exec web bash
