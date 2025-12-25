@@ -18,7 +18,7 @@ class StudyStatus(str, Enum):
 class StudiesCreate(BaseModel):
     patient_name: str = Field(..., min_length=1, max_length=200, description="Nombre del paciente")
     type: StudyType = Field(..., description="Tipo de estudio médico")
-    status: StudyStatus = Field(default=StudyStatus.PENDIENTE, description="Estado del estudio")
+    status: StudyStatus = Field(..., description="Estado del estudio")
 
 
 class StudiesRead(BaseModel):
