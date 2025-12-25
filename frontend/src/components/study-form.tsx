@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { CreateStudyPayload } from '@/types/study';
+import { STUDY_TYPES_OPTIONS, STUDY_STATUSES, StudyStatus } from '@/constants';
 import styles from '@/styles/study-form.module.css';
 
 interface StudyFormProps {
@@ -10,7 +11,7 @@ interface StudyFormProps {
 export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
   const [patientName, setPatientName] = useState('');
   const [type, setType] = useState('');
-  const [status, setStatus] = useState('pendiente');
+  const [status, setStatus] = useState<StudyStatus>(STUDY_STATUSES.PENDIENTE);
   const [formError, setFormError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -31,7 +32,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
     // Limpiar el formulario
     setPatientName('');
     setType('');
-    setStatus('pendiente');
+    setStatus(STUDY_STATUSES.PENDIENTE);
   };
 
   return (
@@ -62,11 +63,11 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
           disabled={loading}
         >
           <option value="">Seleccione un tipo</option>
-          <option value="Tomografía">Tomografía</option>
-          <option value="Resonancia">Resonancia</option>
-          <option value="Rayos X">Rayos X</option>
-          <option value="Ecografía">Ecografía</option>
-          <option value="Análisis de Sangre">Análisis de Sangre</option>
+          {STUDY_TYPES_OPTIONS.map((studyType) => (
+            <option key={studyType} value={studyType}>
+              {studyType}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -74,12 +75,12 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
         <label className={styles.label}>Estado</label>
         <select
           value={status}
-          onChange={(e) => setStatus(e.target.value)}
+          onChange={(e) => setStatus(e.target.value as StudyStatus)}
           className={styles.select}
           disabled={loading}
         >
-          <option value="pendiente">Pendiente</option>
-          <option value="completado">Completado</option>
+          <option value={STUDY_STATUSES.PENDIENTE}>Pendiente</option>
+          <option value={STUDY_STATUSES.COMPLETADO}>Completado</option>
         </select>
       </div>
 
