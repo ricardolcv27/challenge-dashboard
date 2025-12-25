@@ -9,12 +9,11 @@ interface StudyListProps {
 export const StudyList = ({ studies }: StudyListProps) => {
   const getStatusClassName = (status: string): string => {
     if (status === 'pendiente') return styles.statusPendiente;
-    if (status === 'completado' || status === 'terminado') return styles.statusCompletado;
+    if (status === 'completado') return styles.statusCompletado;
     return styles.statusDefault;
   };
 
   const getStatusText = (status: string): string => {
-    if (status === 'terminado') return 'completado';
     return status;
   };
 
