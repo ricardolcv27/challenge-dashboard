@@ -1,10 +1,24 @@
-from pydantic import BaseModel, ConfigDict
+from enum import Enum
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class StudyType(str, Enum):
+    TOMOGRAFIA = "Tomografía"
+    RESONANCIA = "Resonancia"
+    RAYOS_X = "Rayos X"
+    ECOGRAFIA = "Ecografía"
+    ANALISIS_SANGRE = "Análisis de Sangre"
+
+
+class StudyStatus(str, Enum):
+    PENDIENTE = "pendiente"
+    COMPLETADO = "completado"
 
 
 class StudiesCreate(BaseModel):
-    patient_name: str
-    type: str
-    status: str
+    patient_name: str = Field(..., min_length=1, max_length=200, description="Nombre del paciente")
+    type: StudyType = Field(..., description="Tipo de estudio médico")
+    status: StudyStatus = Field(default=StudyStatus.PENDIENTE, description="Estado del estudio")
 
 
 class StudiesRead(BaseModel):
