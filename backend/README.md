@@ -7,7 +7,7 @@ Se uso como plantilla base un repo propio: https://github.com/ricardolcv27/fasta
 ## Herramientas usadas
 
 - **FastAPI** - Framework web
-- **SQLite** - Base de datos ligera (archivo `studies.db`)
+- **SQLite** - Base de datos (archivo `studies.db`)
 - **SQLAlchemy** - ORM con soporte async
 - **Docker + Docker Compose** - Desarrollo containerizado
 - **Middlewares** - CORS y logging configurados
@@ -44,7 +44,7 @@ backend/
 ├── docker-compose.yml
 ├── requirements.txt
 ├── Makefile                 # Comandos útiles
-├── studies.db               # Base de datos SQLite (auto-generada)
+├── studies.db               # Base de datos SQLite
 └── .env.example
 ```
 
