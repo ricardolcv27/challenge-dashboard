@@ -1,7 +1,7 @@
-import { FormEvent, useState } from 'react';
-import { CreateStudyPayload } from '@/types/study';
-import { STUDY_TYPES_OPTIONS, STUDY_STATUSES, StudyStatus, StudyType } from '@/constants';
+import { STUDY_STATUSES, STUDY_TYPES_OPTIONS, type StudyStatus, type StudyType } from '@/constants';
 import styles from '@/styles/study-form.module.css';
+import type { CreateStudyPayload } from '@/types/study';
+import { type FormEvent, useState } from 'react';
 
 interface StudyFormProps {
   onSubmit: (study: CreateStudyPayload) => Promise<void>;
@@ -40,14 +40,13 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      {formError && (
-        <div className={styles.formError}>
-          {formError}
-        </div>
-      )}
+      {formError && <div className={styles.formError}>{formError}</div>}
       <div className={styles.formGroup}>
-        <label className={styles.label}>Nombre del Paciente</label>
+        <label htmlFor="patientName" className={styles.label}>
+          Nombre del Paciente
+        </label>
         <input
+          id="patientName"
           type="text"
           value={patientName}
           onChange={(e) => setPatientName(e.target.value)}
@@ -58,8 +57,11 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
       </div>
 
       <div className={styles.formGroup}>
-        <label className={styles.label}>Tipo de Estudio</label>
+        <label htmlFor="studyType" className={styles.label}>
+          Tipo de Estudio
+        </label>
         <select
+          id="studyType"
           value={type}
           onChange={(e) => setType(e.target.value as StudyType)}
           className={styles.select}
@@ -75,8 +77,11 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
       </div>
 
       <div className={styles.formGroup}>
-        <label className={styles.label}>Estado</label>
+        <label htmlFor="studyStatus" className={styles.label}>
+          Estado
+        </label>
         <select
+          id="studyStatus"
           value={status}
           onChange={(e) => setStatus(e.target.value as StudyStatus)}
           className={styles.select}
@@ -87,11 +92,7 @@ export const StudyForm = ({ onSubmit, loading }: StudyFormProps) => {
         </select>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className={styles.submitButton}
-      >
+      <button type="submit" disabled={loading} className={styles.submitButton}>
         {loading ? 'Agregando...' : 'Agregar Estudio'}
       </button>
     </form>

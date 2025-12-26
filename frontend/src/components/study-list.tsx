@@ -1,5 +1,5 @@
-import { Study } from '@/types/study';
 import styles from '@/styles/study-list.module.css';
+import type { Study } from '@/types/study';
 import '../styles/scrollbar.css';
 
 interface StudyListProps {
@@ -18,11 +18,7 @@ export const StudyList = ({ studies }: StudyListProps) => {
   };
 
   if (studies.length === 0) {
-    return (
-      <div className={styles.emptyState}>
-        No hay estudios registrados
-      </div>
-    );
+    return <div className={styles.emptyState}>No hay estudios registrados</div>;
   }
 
   return (
@@ -30,12 +26,8 @@ export const StudyList = ({ studies }: StudyListProps) => {
       {studies.map((study) => (
         <div key={study.id} className={styles.studyCard}>
           <div className={styles.studyInfo}>
-            <h3 className={styles.patientName}>
-              {study.patient_name}
-            </h3>
-            <p className={styles.studyType}>
-              {study.type}
-            </p>
+            <h3 className={styles.patientName}>{study.patient_name}</h3>
+            <p className={styles.studyType}>{study.type}</p>
           </div>
           <span className={`${styles.statusBadge} ${getStatusClassName(study.status)}`}>
             {getStatusText(study.status)}

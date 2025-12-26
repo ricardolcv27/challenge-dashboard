@@ -7,16 +7,17 @@ interface PaginationProps {
   onNextPage: () => void;
 }
 
-export const Pagination = ({ 
-  currentPage, 
-  totalPages, 
-  onPreviousPage, 
-  onNextPage 
+export const Pagination = ({
+  currentPage,
+  totalPages,
+  onPreviousPage,
+  onNextPage,
 }: PaginationProps) => {
   return (
     <div className={styles.pagination}>
-      <button 
-        onClick={onPreviousPage} 
+      <button
+        type="button"
+        onClick={onPreviousPage}
         disabled={currentPage === 1}
         className={styles.paginationButton}
       >
@@ -25,8 +26,9 @@ export const Pagination = ({
       <span className={styles.paginationInfo}>
         Página {currentPage} de {totalPages || 1}
       </span>
-      <button 
-        onClick={onNextPage} 
+      <button
+        type="button"
+        onClick={onNextPage}
         disabled={currentPage >= totalPages || totalPages === 0}
         className={styles.paginationButton}
       >

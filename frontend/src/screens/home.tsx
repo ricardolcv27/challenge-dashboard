@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Title, Subtitle, Card, MetricCard, StudyList, StudyForm, Pagination } from '@/components';
+import { Card, MetricCard, Pagination, StudyForm, StudyList, Subtitle, Title } from '@/components';
 import { useFetch } from '@/hooks/useFetch';
 import { studiesService } from '@/services/studies.service';
-import { Study, CreateStudyPayload, StudyMetrics } from '@/types/study';
 import styles from '@/styles/home.module.css';
+import type { CreateStudyPayload, Study, StudyMetrics } from '@/types/study';
+import { useCallback, useEffect, useState } from 'react';
 
 export const Home = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -20,7 +20,11 @@ export const Home = () => {
   }, [currentPage]);
 
   // Hook para obtener los estudios
-  const { data: studies, loading, error } = useFetch<Study[]>(fetchStudies, [refreshKey, currentPage]);
+  const {
+    data: studies,
+    loading,
+    error,
+  } = useFetch<Study[]>(fetchStudies, [refreshKey, currentPage]);
 
   // Obtener métricas al cargar la página
   useEffect(() => {
@@ -44,7 +48,7 @@ export const Home = () => {
       setIsSubmitting(true);
       setFormError(null);
       await studiesService.createStudy(payload);
-      
+
       // Refrescar la lista de estudios
       setRefreshKey((prev) => prev + 1);
 
@@ -65,13 +69,13 @@ export const Home = () => {
   // Manejar paginación
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
@@ -92,31 +96,21 @@ export const Home = () => {
           {/* Formulario para agregar estudios */}
           <Card>
             <Subtitle text="Agregar Nuevo Estudio" />
-            {formError && (
-              <div className={styles.formError}>
-                {formError}
-              </div>
-            )}
+            {formError && <div className={styles.formError}>{formError}</div>}
             <StudyForm onSubmit={handleCreateStudy} loading={isSubmitting} />
           </Card>
 
           {/* Lista de estudios */}
           <Card>
             <Subtitle text="Lista de Estudios" />
-            {loading && (
-              <div className={styles.loadingState}>
-                Cargando estudios...
-              </div>
-            )}
+            {loading && <div className={styles.loadingState}>Cargando estudios...</div>}
             {error && (
-              <div className={styles.errorState}>
-                Error al cargar los estudios: {error.message}
-              </div>
+              <div className={styles.errorState}>Error al cargar los estudios: {error.message}</div>
             )}
             {!loading && !error && studies && (
               <>
                 <StudyList studies={studies} />
-                <Pagination 
+                <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPreviousPage={handlePreviousPage}
@@ -130,4 +124,3 @@ export const Home = () => {
     </div>
   );
 };
-
