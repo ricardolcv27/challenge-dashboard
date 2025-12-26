@@ -6,7 +6,7 @@ Se uso como plantilla base un repo propio: https://github.com/ricardolcv27/fasta
 
 ## Herramientas usadas
 
-- **FastAPI** - Framework web moderno y rápido
+- **FastAPI** - Framework web
 - **SQLite** - Base de datos ligera (archivo `studies.db`)
 - **SQLAlchemy** - ORM con soporte async
 - **Docker + Docker Compose** - Desarrollo containerizado
