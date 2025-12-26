@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { Title, Subtitle, Card, MetricCard, StudyList, StudyForm } from '@/components';
+import { useState, useCallback, useEffect } from 'react';
+import { Title, Subtitle, Card, MetricCard, StudyList, StudyForm, Pagination } from '@/components';
 import { useFetch } from '@/hooks/useFetch';
 import { studiesService } from '@/services/studies.service';
 import { Study, CreateStudyPayload, StudyMetrics } from '@/types/study';
@@ -9,22 +9,34 @@ export const Home = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [metrics, setMetrics] = useState<StudyMetrics>({ total: 0, pending: 0, completed: 0 });
+  const pageSize = 5;
 
-  // Función para obtener estudios
+  // Función para obtener estudios con paginación
   const fetchStudies = useCallback(() => {
-    return studiesService.getStudies();
-  }, []);
+    const offset = (currentPage - 1) * pageSize;
+    return studiesService.getStudies(offset, pageSize);
+  }, [currentPage]);
 
   // Hook para obtener los estudios
-  const { data: studies, loading, error } = useFetch<Study[]>(fetchStudies, [refreshKey]);
+  const { data: studies, loading, error } = useFetch<Study[]>(fetchStudies, [refreshKey, currentPage]);
 
-  // Calcular métricas
-  const metrics: StudyMetrics = {
-    total: studies?.length || 0,
-    pending: studies?.filter((s) => s.status === 'pendiente').length || 0,
-    completed:
-      studies?.filter((s) => s.status === 'completado').length || 0,
-  };
+  // Obtener métricas al cargar la página
+  useEffect(() => {
+    const loadMetrics = async () => {
+      try {
+        const data = await studiesService.getMetrics();
+        setMetrics(data);
+      } catch (err) {
+        console.error('Error al cargar métricas:', err);
+      }
+    };
+    loadMetrics();
+  }, []);
+
+  // Calcular total de páginas
+  const totalPages = Math.ceil(metrics.total / pageSize);
 
   // Manejar el envío del formulario
   const handleCreateStudy = async (payload: CreateStudyPayload) => {
@@ -32,13 +44,34 @@ export const Home = () => {
       setIsSubmitting(true);
       setFormError(null);
       await studiesService.createStudy(payload);
+      
       // Refrescar la lista de estudios
       setRefreshKey((prev) => prev + 1);
+
+      try {
+        const updatedMetrics = await studiesService.getMetrics();
+        setMetrics(updatedMetrics);
+      } catch (metricsErr) {
+        console.error('Error al actualizar métricas:', metricsErr);
+      }
     } catch (err) {
       console.error('Error al crear estudio:', err);
       setFormError('Error al crear el estudio. Por favor, intente nuevamente.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Manejar paginación
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
     }
   };
 
@@ -80,7 +113,17 @@ export const Home = () => {
                 Error al cargar los estudios: {error.message}
               </div>
             )}
-            {!loading && !error && studies && <StudyList studies={studies} />}
+            {!loading && !error && studies && (
+              <>
+                <StudyList studies={studies} />
+                <Pagination 
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPreviousPage={handlePreviousPage}
+                  onNextPage={handleNextPage}
+                />
+              </>
+            )}
           </Card>
         </div>
       </div>

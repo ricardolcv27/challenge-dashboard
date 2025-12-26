@@ -1,5 +1,5 @@
 import { api } from '@/lib/api';
-import { Study, CreateStudyPayload } from '@/types/study';
+import { Study, CreateStudyPayload, StudyMetrics } from '@/types/study';
 
 /**
  * Servicio para gestionar estudios médicos
@@ -7,10 +7,17 @@ import { Study, CreateStudyPayload } from '@/types/study';
 
 export const studiesService = {
   /**
-   * Obtener todos los estudios
+   * Obtener estudios con paginación
    */
-  getStudies: async (): Promise<Study[]> => {
-    return api<Study[]>('/studies', { method: 'GET' });
+  getStudies: async (offset: number = 0, limit: number = 5): Promise<Study[]> => {
+    return api<Study[]>(`/studies?offset=${offset}&limit=${limit}`, { method: 'GET' });
+  },
+
+  /**
+   * Obtener métricas de estudios
+   */
+  getMetrics: async (): Promise<StudyMetrics> => {
+    return api<StudyMetrics>('/studies/metrics', { method: 'GET' });
   },
 
   /**
