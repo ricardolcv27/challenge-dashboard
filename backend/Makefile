@@ -17,13 +17,10 @@ dev:
 	uvicorn main:app --reload --host $${HOST:-0.0.0.0} --port $${PORT:-8000}
 
 up:
-	docker-compose up -d
+	docker-compose up --build
 
 down:
 	docker-compose down
-
-shell:
-	docker-compose exec web bash
 
 test:
 	PYTHONPATH=. pytest tests/ -v

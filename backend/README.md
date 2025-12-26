@@ -1,42 +1,42 @@
 # Backend - Medical Studies Dashboard
 
-Backend API para gestión de estudios médicos usando FastAPI y SQLite.
+Backend implementado para el challenge usando FastAPI y SQLite.
 
 Se uso como plantilla base un repo propio: https://github.com/ricardolcv27/fastapi-lite
 
-## Características
+## Herramientas usadas
 
 - **FastAPI** - Framework web moderno y rápido
 - **SQLite** - Base de datos ligera (archivo `studies.db`)
-- **SQLAlchemy** - ORM con soporte asíncrono
-- **Auto-creación de tablas** - Las tablas se crean automáticamente al iniciar la app
+- **SQLAlchemy** - ORM con soporte async
 - **Docker + Docker Compose** - Desarrollo containerizado
 - **Middlewares** - CORS y logging configurados
-- **Pydantic** - Validación automática de datos
-- **pytest** - Tests unitarios
+- **Pydantic** - Validacion de datos
+- **pytest** - Tests de integracion
 
 ## Estructura del proyecto
 
 ```
 backend/
+├── main.py                 # Punto de entrada + middlewares
 ├── app/
-│   ├── main.py              # Punto de entrada + middlewares
+│   ├── api/
+│   │   ├── api.py           # Router principal
+│   │   └── endpoints/
+│   │       └── studies.py   # Endpoints de estudios
 │   ├── core/
 │   │   ├── config.py        # Configuración (env vars)
+│   │   ├── errors.py        # Manejo de errores en la app
 │   │   └── middleware.py    # Middlewares CORS y logging
+│   ├── crud/                # Lógica de acceso a datos
+│   │   └── studies.py
 │   ├── db/
 │   │   ├── base.py          # Base de SQLAlchemy
 │   │   └── session.py       # Engine async + get_session
 │   ├── models/              # tablas
 │   │   └── studies.py
-│   ├── schemas/             # DTOs
-│   │   └── studies.py
-│   ├── crud/                # Lógica de acceso a datos
-│   │   └── studies.py
-│   └── api/
-│       ├── api.py           # Router principal
-│       └── endpoints/
-│           └── studies.py   # Endpoints de estudios
+│   └── schemas/             # DTOs
+│       └── studies.py
 ├── tests/                   # Tests
 │   ├── conftest.py          # Fixtures y configuración
 │   └── test_studies.py
@@ -48,40 +48,52 @@ backend/
 └── .env.example
 ```
 
-## Inicio rápido
+## Endpoints
+### POST /studies
+Agregar un nuevo estudio.
 
-### 1. Clonar y configurar
+### GET **/studies**?offset={*offset*}&limit={*limit*}
+Listar los estudios. Le agregue **paginacion**, por defecto el `offset = 0` y `limit = 5`. Ya que no es una buena practica que un endpoint GetAll devuelva todos los elementos. Ya que puede existir un gran volumen de registros y el sistema puede saturarse al devolver todos en un solo llamado. En este challenge pequeno no ocurre, pero a gran escala la cantidad de elementos devueltos puede convertirse en un problema.
+
+### GET /studies/metrics
+Devuelve la cantidad de estudios pendientes, completados y totales. No agregue esta informacion al endpoint `GET /studies` ya que estaria rompiendo el contrato de lo que debe de devolver el endpoint `GET /studies` que esta en el enunciado.
+
+## Levantar backend
+
+Se puede levantar usando docker pero igualmente se puede levantar localmente sin necesidad de docker.
+
+Opcionalmente tambien se puede crear un `.env` si desea cambiar algunas variables de entorno
 
 ```bash
-# Copiar variables de entorno
 cp .env.example .env
 
-# Editar .env si es necesario (opcional)
+# Editar .env si es necesario
 ```
 
-### 2. Levantar con Docker Compose
+### 1. Levantar con Docker Compose
 
 ```bash
 docker-compose up --build
 ```
 
-La API estará en:
+El server se econtraria corriendo en:
 - **API**: http://localhost:8000
 
-### 3. Desarrollo local (sin Docker)
+O en el host o puerto colocado en el .env
+
+### 2. Desarrollo local (sin Docker)
 
 ```bash
-# Crear virtualenv
-python -m venv .venv
-source .venv/bin/activate  # En Windows: .venv\Scripts\activate
-
-# Instalar dependencias
-make install
-# O manualmente: pip install -r requirements.txt
-
-# Levantar servidor
-make dev
-# O manualmente: uvicorn main:app --reload
+python3 -m venv .venv
+```
+```bash
+source .venv/bin/activate
+```
+```bash
+pip install -r requirements.txt #o make install
+```
+```bash
+uvicorn main:app --reload #o make dev
 ```
 
 ## Base de datos
@@ -94,24 +106,18 @@ Se creo una unica tabla `studies` que almacena los estudios hechos.
 
 ![alt text](image.png)
 
-### Auto-creación de tablas
+La tabla se crean automaticamente al iniciar la aplicacion.
 
-Las tablas se crean automaticamente al iniciar la aplicacion.
-
-###
 
 ### Resetear la base de datos
-
-Si necesitas empezar de cero:
 
 ```bash
 # Detener la app
 # Borrar la base de datos
 rm studies.db
-# Reiniciar la app (se recreara denuevo la base de datos)
+# Iniciar denuevo la app (se recreara denuevo la base de datos)
 make dev
 ```
-
 
 ## Comandos útiles (Makefile)
 
@@ -122,16 +128,16 @@ make dev        # Iniciar servidor en desarrollo
 make up         # Levantar Docker Compose
 make down       # Detener Docker Compose(cache, db)
 make test       # Ejecutar tests
-make lint       # Ejecutar linters (flake8 + black)
-make shell      # Shell en contenedor Docker
+make lint       # Ejecutar linters (flake8)
 ```
 
 ## Middlewares configurados
 
-### 1. CORS
-Actualmente permite todas las origins (`*`). Para restringir, editar `app/core/middleware.py`:
+### CORS
+Actualmente permite todas las origins (`*`) para desarrollar y probar el challenge. Lo ideal para produccion hay que editarlo:
 
 ```python
+#app/core/middleware.py
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # Cambiar aca
@@ -140,14 +146,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 ```
-Actualmente el `allow_origins` esta con `[*]` para el desarrollo y probar el challenge.
 
-### 2. Logging
+### Logging
 Logea todas las peticiones HTTP
 
 ## Testing
 
-Los tests usan SQLite en memoria en lugar de PostgreSQL para mayor velocidad y sin dependencias externas.
+Los tests usan SQLite en memoria.
 
 ```bash
 # Ejecutar todos los tests
@@ -159,8 +164,8 @@ PYTHONPATH=. pytest tests/ -v
 
 ### Estructura de tests
 
-- `tests/conftest.py`: Configuración de fixtures (BD en memoria, cliente HTTP)
-- `tests/test_studies.py`: Tests de endpoints de studies
+- `tests/conftest.py`: Configura los fixtures (BD en memoria, cliente HTTP)
+- `tests/test_studies.py`: Tests de endpoints de `/studies`
 
 Los tests son completamente independientes y cada uno usa su propia base de datos limpia.
 
@@ -173,10 +178,9 @@ PORT=8000
 HOST=0.0.0.0
 ```
 
-## Mejoras futuras
-
-- Agregar paginacion al endpoint `GET /studies` y agregar otro endpoint que me indique la cantidad de de estudios totales, pendientes y completados.
-- Mejor modelado de tablas para que sea mas escalable.
-- Implementar migraciones con Alembic.
-- Cambiar SQLite por PostgreSQL en producción.
-- CI/CD pipelines.
+## Aclaraciones y mejoras
+- Agregue un endpoint mas `GET /studies/metrics` para obtener la cantidad de estudios totales, pendientes y completados.
+- **Mejora**: Mejorar modelado de tablas para que sea mas escalable.
+- **Mejora**: Implementar migraciones con Alembic.
+- **Mejora**: Cambiar SQLite por PostgreSQL en producción para persistencia en disco.
+- **Mejora**: agregar CI/CD pipelines.

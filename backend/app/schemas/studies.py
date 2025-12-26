@@ -11,8 +11,8 @@ class StudyType(str, Enum):
 
 
 class StudyStatus(str, Enum):
-    PENDIENTE = "pendiente"
-    COMPLETADO = "completado"
+    PENDING = "pendiente"
+    COMPLETED = "completado"
 
 
 class StudiesCreate(BaseModel):
@@ -28,3 +28,8 @@ class StudiesRead(BaseModel):
     patient_name: str
     type: str
     status: str
+
+class StudiesMetrics(BaseModel):
+    total: int
+    pending: int
+    completed: int
